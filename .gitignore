@@ -1,0 +1,9 @@
+/.idea/
+/notes/
+/config/locales/ru/
+/config/locales/en/
+/db/backup/db_backup.sql
+.env
+.env.test
+.gitignore.server
+.gitignore.public

@@ -1,0 +1,54 @@
+version: '3.9'
+services:
+  app:
+    build:
+      context: .
+    container_name: pink-bot
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    environment:
+      - ENV=${ENV:-development}
+      - TZ=Europe/Moscow
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "3000:3000"
+    restart: always
+
+  db:
+    image: postgres:15
+    container_name: telegram-db
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: always
+
+  redis:
+    image: redis:7
+    container_name: redis
+    restart: always
+
+  db_backup:
+    build:
+      context: ./db/backup
+    container_name: db_backup
+    volumes:
+      - ./db/backup:/backup
+    depends_on:
+      - db
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    restart: always
+
+volumes:
+  db_data:

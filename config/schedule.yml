@@ -1,0 +1,3 @@
+matchmaker:
+  cron: "1 1 * * *"
+  class: "MatchmakerWorker"

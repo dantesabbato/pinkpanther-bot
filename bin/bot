@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+require_relative "../config/boot"
+
+Initializer.configure
+logger = Initializer.get_logger
+
+logger.info "Starting Pink-Bot..."
+
+begin
+  TelegramService.start
+rescue Interrupt
+  logger.info "Pink-Bot interrupted by user"
+  exit(0)
+rescue SignalException => e
+  logger.info "Received signal: #{e.signo} - Shutting down"
+  exit(0)
+rescue => e
+  logger.fatal "Unexpected error: #{e.message}"
+  logger.fatal e.backtrace.join("\n")
+  exit(1)
+end

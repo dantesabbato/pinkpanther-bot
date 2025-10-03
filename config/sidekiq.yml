@@ -1,0 +1,19 @@
+:concurrency: 25
+:daemon: false
+:dynamic: true
+:queues:
+  - default
+  - messages
+  - callbacks
+  - events
+:limits:
+  messages:
+    limit: 1
+    period: 1
+  callbacks:
+    limit: 1
+    period: 1
+  events:
+    limit: 1
+    period: 1
+:require: ./config/initializers/sidekiq.rb
